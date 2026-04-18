@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const fs = require('fs');
 const path = require('path');
 
 const authRoutes = require('./routes/auth');
@@ -9,6 +10,11 @@ const teacherRoutes = require('./routes/teacher');
 const studentRoutes = require('./routes/student');
 
 const app = express();
+const uploadsDir = path.join(__dirname, 'uploads');
+
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 const defaultOrigins = [
   'http://127.0.0.1:3000',
@@ -32,7 +38,7 @@ app.use(cors({
   },
 }));
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(uploadsDir));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/teacher', teacherRoutes);

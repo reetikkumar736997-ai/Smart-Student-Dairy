@@ -9,6 +9,11 @@ const API_ORIGIN =
   `${window.location.protocol}//${window.location.hostname}:5005`;
 const API_BASE = `${API_ORIGIN}/api`;
 const UPLOADS_BASE = `${API_ORIGIN}/uploads`;
+
+function freshApiUrl(endpoint) {
+  const separator = endpoint.includes('?') ? '&' : '?';
+  return `${API_BASE}${endpoint}${separator}_=${Date.now()}`;
+}
 const THEME_KEY = 'sams_theme';
 const SCHOOL_CLASSES = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 const SCHOOL_SECTIONS = ['A', 'B', 'C'];
@@ -56,7 +61,7 @@ function getSubjectOptions(classLevel, selected = '') {
 
 function renderAudienceBadge(item) {
   if (!item?.classLevel || !item?.section) return '';
-  return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-fixed/70 text-primary text-xs font-bold tracking-wide">Class ${item.classLevel} â€¢ Section ${item.section}</span>`;
+  return `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-fixed/70 text-primary text-xs font-bold tracking-wide">Class ${item.classLevel} • Section ${item.section}</span>`;
 }
 
 function isDarkTheme() {
@@ -484,7 +489,7 @@ function renderLogin() {
               </div>
               <div class="relative">
                 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant">lock</span>
-                <input id="loginPassword" class="w-full pl-12 pr-12 py-4 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline-variant transition-all" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" type="password" required/>
+                <input id="loginPassword" class="w-full pl-12 pr-12 py-4 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline-variant transition-all" placeholder="••••••••" type="password" required/>
                 <button type="button" onclick="togglePassword('loginPassword')" class="absolute right-4 top-1/2 -translate-y-1/2 text-outline-variant hover:text-on-surface">
                   <span class="material-symbols-outlined">visibility</span>
                 </button>
@@ -613,7 +618,7 @@ function renderSignup() {
           <label class="block text-sm font-semibold text-on-surface px-1">Password</label>
           <div class="relative">
             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant">lock</span>
-            <input id="signupPassword" class="w-full pl-12 pr-12 py-4 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline-variant transition-all" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" type="password" required minlength="6"/>
+            <input id="signupPassword" class="w-full pl-12 pr-12 py-4 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline-variant transition-all" placeholder="••••••••" type="password" required minlength="6"/>
             <button type="button" onclick="togglePassword('signupPassword')" class="absolute right-4 top-1/2 -translate-y-1/2 text-outline-variant hover:text-on-surface">
               <span class="material-symbols-outlined">visibility</span>
             </button>
@@ -790,7 +795,7 @@ function renderProfilePage() {
           <p>Email: ${state.user?.email || 'N/A'}</p>
           <p>Username: ${state.user?.username || 'Not set'}</p>
           ${state.user?.role === 'student' ? `
-          <p>Class ${state.user?.classLevel || '--'} â€¢ Section ${state.user?.section || '--'}</p>
+          <p>Class ${state.user?.classLevel || '--'} • Section ${state.user?.section || '--'}</p>
           <p>Roll No: ${state.user?.rollNumber || '--'}</p>
           ` : `
           <p>Access Level: Teacher</p>
@@ -1118,9 +1123,9 @@ async function loadTeacherData() {
             <h4 class="text-lg font-bold font-manrope text-on-surface">${t.subject || '--'}</h4>
             <p class="text-on-surface-variant text-sm mt-1 flex items-center gap-2">
               <span class="material-symbols-outlined text-[16px]">location_on</span>
-              ${roomLabel}${teacherLabel ? ` • ${teacherLabel}` : ''}
+              ${roomLabel}${teacherLabel ? ` ? ${teacherLabel}` : ''}
             </p>
-            <p class="text-xs text-on-surface-variant mt-2">Class ${t.classLevel || '--'} • Section ${t.section || '--'}</p>
+            <p class="text-xs text-on-surface-variant mt-2">Class ${t.classLevel || '--'} ? Section ${t.section || '--'}</p>
           </div>
         </div>
       `;
@@ -1160,8 +1165,8 @@ async function loadTeacherData() {
             </div>
             <div>
               <h4 class="font-bold text-on-surface text-lg">${m.title || m.filename}</h4>
-              <p class="text-xs text-on-surface-variant mt-1">${courseName} • Class ${m.classLevel || '--'} • Section ${m.section || '--'}</p>
-              <p class="text-xs text-on-surface-variant/70 mt-1">${fileSize} • Ready to open</p>
+              <p class="text-xs text-on-surface-variant mt-1">${courseName} ? Class ${m.classLevel || '--'} ? Section ${m.section || '--'}</p>
+              <p class="text-xs text-on-surface-variant/70 mt-1">${fileSize} ? Ready to open</p>
             </div>
           </div>
           <a href="${UPLOADS_BASE}/${m.filepath}" target="_blank" class="inline-flex items-center justify-center px-5 py-3 rounded-[2rem] bg-primary-fixed text-primary font-bold hover:scale-105 transition-transform">Open Material</a>
@@ -1179,7 +1184,7 @@ async function loadTeacherData() {
 function renderTimetable() {
   const isTeacher = state.user?.role === 'teacher';
   const studentAudience = !isTeacher && state.user?.classLevel && state.user?.section
-    ? `Class ${state.user.classLevel} â€¢ Section ${state.user.section}`
+    ? `Class ${state.user.classLevel} • Section ${state.user.section}`
     : 'your section';
   return `
   ${topBar()}
@@ -1318,7 +1323,7 @@ function bindTimetable() {
         if (!res.ok) throw new Error(isEditing ? 'Failed to update entry' : 'Failed to create entry');
         showToast(isEditing ? 'Timetable entry updated!' : 'Timetable entry created!', 'success');
         resetTimetableForm();
-        loadTimetableData();
+        await loadTimetableData();
       } catch (err) {
         showToast(err.message, 'error');
       }
@@ -1389,7 +1394,7 @@ function resetTimetableForm() {
 async function loadTimetableData() {
   try {
     const endpoint = state.user?.role === 'teacher' ? '/teacher/timetable' : '/student/timetable';
-    const res = await fetch(`${API_BASE}${endpoint}`, { headers: authHeaders() });
+    const res = await fetch(freshApiUrl(endpoint), { headers: authHeaders(), cache: 'no-store' });
     const data = res.ok ? await res.json() : [];
     state.timetable = data;
 
@@ -1414,7 +1419,7 @@ async function loadTimetableData() {
                 <div class="flex-1">
                   <h5 class="font-bold text-on-surface">${t.subject}</h5>
                   <div class="mt-2">${renderAudienceBadge(t)}</div>
-                  <p class="text-xs text-on-surface-variant">${t.roomNumber || t.location || 'TBD'} • ${t.teacherName || t.instructor || ''}</p>
+                  <p class="text-xs text-on-surface-variant">${t.roomNumber || t.location || 'TBD'} ? ${t.teacherName || t.instructor || ''}</p>
                 </div>
                 <button onclick="populateTimetableForm('${t._id}')" class="p-2 rounded-full hover:bg-primary/10 text-slate-400 hover:text-primary transition-colors" title="Edit entry">
                   <span class="material-symbols-outlined text-sm">edit</span>
@@ -1480,7 +1485,7 @@ async function deleteTimetable(id) {
   try {
     await fetch(`${API_BASE}/teacher/timetable/${id}`, { method: 'DELETE', headers: authHeaders() });
     showToast('Entry deleted', 'info');
-    loadTimetableData();
+    await loadTimetableData();
   } catch (err) {
     showToast('Failed to delete', 'error');
   }
@@ -1492,7 +1497,7 @@ async function deleteTimetable(id) {
 function renderAnnouncements() {
   const isTeacher = state.user?.role === 'teacher';
   const studentAudience = !isTeacher && state.user?.classLevel && state.user?.section
-    ? `Class ${state.user.classLevel} â€¢ Section ${state.user.section}`
+    ? `Class ${state.user.classLevel} • Section ${state.user.section}`
     : 'your class';
   return `
   ${topBar()}
@@ -1572,7 +1577,7 @@ function bindAnnouncements() {
         if (!res.ok) throw new Error('Failed to create announcement');
         showToast('Announcement published!', 'success');
         form.reset();
-        loadAnnouncementData();
+        await loadAnnouncementData();
       } catch (err) {
         showToast(err.message, 'error');
       }
@@ -1583,7 +1588,7 @@ function bindAnnouncements() {
 async function loadAnnouncementData() {
   try {
     const endpoint = state.user?.role === 'teacher' ? '/teacher/announcements' : '/student/announcements';
-    const res = await fetch(`${API_BASE}${endpoint}`, { headers: authHeaders() });
+    const res = await fetch(freshApiUrl(endpoint), { headers: authHeaders(), cache: 'no-store' });
     const data = res.ok ? await res.json() : [];
     state.announcements = data;
 
@@ -1626,7 +1631,7 @@ async function deleteAnnouncement(id) {
   try {
     await fetch(`${API_BASE}/teacher/announcements/${id}`, { method: 'DELETE', headers: authHeaders() });
     showToast('Announcement deleted', 'info');
-    loadAnnouncementData();
+    await loadAnnouncementData();
   } catch (err) {
     showToast('Failed to delete', 'error');
   }
@@ -1638,7 +1643,7 @@ async function deleteAnnouncement(id) {
 function renderMaterials() {
   const isTeacher = state.user?.role === 'teacher';
   const studentAudience = !isTeacher && state.user?.classLevel && state.user?.section
-    ? `Class ${state.user.classLevel} â€¢ Section ${state.user.section}`
+    ? `Class ${state.user.classLevel} • Section ${state.user.section}`
     : 'your class';
   return `
   ${topBar()}
@@ -1716,7 +1721,7 @@ function bindMaterials() {
         if (!res.ok) throw new Error('Failed to upload');
         showToast('Material uploaded!', 'success');
         form.reset();
-        loadMaterialsData();
+        await loadMaterialsData();
       } catch (err) {
         showToast(err.message, 'error');
       }
@@ -1727,7 +1732,7 @@ function bindMaterials() {
 async function loadMaterialsData() {
   try {
     const endpoint = state.user?.role === 'teacher' ? '/teacher/materials' : '/student/materials';
-    const res = await fetch(`${API_BASE}${endpoint}`, { headers: authHeaders() });
+    const res = await fetch(freshApiUrl(endpoint), { headers: authHeaders(), cache: 'no-store' });
     const data = res.ok ? await res.json() : [];
     state.materials = data;
 
@@ -1744,7 +1749,7 @@ async function loadMaterialsData() {
             <div>
               <h4 class="font-bold text-on-surface">${m.title || m.filename}</h4>
               <div class="mt-2">${renderAudienceBadge(m)}</div>
-              <p class="text-xs text-on-surface-variant">${m.course || 'General'} â€¢ ${m.size || 'N/A'}</p>
+              <p class="text-xs text-on-surface-variant">${m.course || 'General'} • ${m.size || 'N/A'}</p>
             </div>
           </div>
           <div class="flex gap-2">
@@ -1770,7 +1775,7 @@ async function deleteMaterial(id) {
   try {
     await fetch(`${API_BASE}/teacher/materials/${id}`, { method: 'DELETE', headers: authHeaders() });
     showToast('Material deleted', 'info');
-    loadMaterialsData();
+    await loadMaterialsData();
   } catch (err) {
     showToast('Failed to delete', 'error');
   }
@@ -1807,7 +1812,7 @@ function renderStudentDashboard() {
               <p class="text-xs uppercase tracking-[0.25em] text-on-surface-variant/60 font-semibold mb-2">Profile</p>
               <h3 class="text-2xl md:text-3xl font-manrope font-bold text-on-surface">${state.user?.name || 'Student'}</h3>
               <p class="text-sm text-on-surface-variant mt-2">${state.user?.email || 'No email found'}</p>
-              <p class="text-sm text-on-surface-variant mt-1">Class ${state.user?.classLevel || '--'} â€¢ Section ${state.user?.section || '--'}</p>
+              <p class="text-sm text-on-surface-variant mt-1">Class ${state.user?.classLevel || '--'} • Section ${state.user?.section || '--'}</p>
               <div class="mt-4">
                 <span class="inline-flex items-center px-5 py-2 rounded-[1.25rem] bg-primary-fixed text-primary font-semibold">Student Account</span>
               </div>
@@ -2218,7 +2223,7 @@ async function loadMarksData() {
         return `
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-5 rounded-2xl bg-surface-container-low border border-outline-variant/10">
             <div>
-              <h4 class="font-manrope font-bold text-on-surface">${mark.studentName} <span class="text-on-surface-variant font-normal">â€¢ ${mark.subject}</span></h4>
+              <h4 class="font-manrope font-bold text-on-surface">${mark.studentName} <span class="text-on-surface-variant font-normal">• ${mark.subject}</span></h4>
               <p class="text-sm text-on-surface-variant mt-1">${mark.studentEmail}</p>
               <div class="mt-2">${renderAudienceBadge(mark)}</div>
               <p class="text-xs uppercase tracking-[0.2em] text-primary mt-2">${mark.examType}</p>
@@ -2774,7 +2779,7 @@ function renderStudentAttendanceHistory() {
         </div>
         <div>
           <p class="text-[11px] font-bold tracking-[0.2em] uppercase text-on-surface-variant mb-2">Class And Section</p>
-          <p class="font-semibold text-on-surface">Class ${entry.classLevel || '--'} â€¢ Section ${entry.section || '--'}</p>
+          <p class="font-semibold text-on-surface">Class ${entry.classLevel || '--'} • Section ${entry.section || '--'}</p>
         </div>
         <div>
           <p class="text-[11px] font-bold tracking-[0.2em] uppercase text-on-surface-variant mb-2">Status</p>
@@ -2849,9 +2854,9 @@ async function deleteAttendance(id) {
 async function loadStudentData() {
   try {
     const [ttRes, annRes, matRes] = await Promise.all([
-      fetch(`${API_BASE}/student/timetable`, { headers: authHeaders() }),
-      fetch(`${API_BASE}/student/announcements`, { headers: authHeaders() }),
-      fetch(`${API_BASE}/student/materials`, { headers: authHeaders() }),
+      fetch(freshApiUrl('/student/timetable'), { headers: authHeaders(), cache: 'no-store' }),
+      fetch(freshApiUrl('/student/announcements'), { headers: authHeaders(), cache: 'no-store' }),
+      fetch(freshApiUrl('/student/materials'), { headers: authHeaders(), cache: 'no-store' }),
     ]);
 
     const timetable = ttRes.ok ? await ttRes.json() : [];
@@ -2884,7 +2889,7 @@ async function loadStudentData() {
         shellClass: 'bg-primary-fixed text-primary',
         title: 'Material upload',
         detail: latestMaterial.title || latestMaterial.filename || 'New material ready to open.',
-        meta: `${latestMaterial.course || 'General'} • ${timeAgo(latestMaterial.createdAt)}`,
+        meta: `${latestMaterial.course || 'General'} ? ${timeAgo(latestMaterial.createdAt)}`,
       });
     }
     if (timetable.length) {
@@ -2895,7 +2900,7 @@ async function loadStudentData() {
         shellClass: 'bg-tertiary-fixed text-tertiary',
         title: 'Class change alert',
         detail: `${latestSchedule.subject || 'Class'} on ${latestSchedule.day || '--'} at ${startLabel}`,
-        meta: `Room ${latestSchedule.roomNumber || latestSchedule.location || 'TBD'} • ${latestSchedule.teacherName || latestSchedule.instructor || 'Teacher update'}`,
+        meta: `Room ${latestSchedule.roomNumber || latestSchedule.location || 'TBD'} ? ${latestSchedule.teacherName || latestSchedule.instructor || 'Teacher update'}`,
       });
     }
 
@@ -2937,9 +2942,9 @@ async function loadStudentData() {
             <h4 class="text-lg font-manrope font-extrabold text-on-surface">${t.subject}</h4>
             <p class="text-on-surface-variant flex items-center gap-1 mt-1 text-sm">
               <span class="material-symbols-outlined text-sm">location_on</span>
-              ${t.roomNumber || t.location || 'TBD'} â€¢ ${t.teacherName || t.instructor || ''}
+              ${t.roomNumber || t.location || 'TBD'} • ${t.teacherName || t.instructor || ''}
             </p>
-            <p class="text-xs text-on-surface-variant mt-2">Class ${t.classLevel || '--'} â€¢ Section ${t.section || '--'}</p>
+            <p class="text-xs text-on-surface-variant mt-2">Class ${t.classLevel || '--'} • Section ${t.section || '--'}</p>
           </div>
         </div>
       `).join('');
@@ -2983,7 +2988,7 @@ async function loadStudentData() {
             </div>
             <div>
               <h4 class="font-bold text-on-surface text-lg">${m.title || m.filename}</h4>
-              <p class="text-xs text-on-surface-variant mt-1">${courseName} • ${fileSize}</p>
+              <p class="text-xs text-on-surface-variant mt-1">${courseName} ? ${fileSize}</p>
               <p class="text-xs text-on-surface-variant/70 mt-1">Material ready to open</p>
             </div>
           </div>
@@ -3030,7 +3035,7 @@ function renderChatbot() {
             <span class="text-xs font-bold font-headline text-secondary uppercase tracking-wider">Assistant</span>
           </div>
           <div class="assistant-bubble bg-secondary-container/30 text-on-surface rounded-r-3xl rounded-bl-3xl p-6 shadow-sm border border-secondary-container/20">
-            <p class="leading-relaxed">Welcome to the Smart Student Dairy Study Assistant! ðŸ‘‹</p>
+            <p class="leading-relaxed">Welcome to the Smart Student Dairy Study Assistant! ??</p>
             <p class="leading-relaxed mt-2">I can help you with your academic questions, explain concepts, solve problems, and provide study guidance. What would you like to learn today?</p>
           </div>
         </div>

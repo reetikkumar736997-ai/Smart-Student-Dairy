@@ -1,0 +1,17 @@
+node_modules/
+**/node_modules/
+
+.env
+**/.env
+.env.local
+**/.env.local
+
+*.log
+*.out
+*.err
+
+uploads/
+**/uploads/
+
+.DS_Store
+Thumbs.db

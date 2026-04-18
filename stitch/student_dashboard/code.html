@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Intellectual Atelier - Student Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#611e00",
+                        "on-primary-fixed": "#001453",
+                        "surface-container-high": "#dce9ff",
+                        "primary": "#00288e",
+                        "background": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "primary-container": "#1e40af",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#dde1ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "inverse-primary": "#b8c4ff",
+                        "on-secondary-fixed-variant": "#005049",
+                        "on-primary-fixed-variant": "#173bab",
+                        "surface": "#f8f9ff",
+                        "surface-container": "#e6eeff",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "surface-bright": "#f8f9ff",
+                        "outline": "#757684",
+                        "on-secondary-container": "#006f66",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#3755c3",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#872d00",
+                        "on-primary-container": "#a8b8ff",
+                        "surface-dim": "#ccdbf3",
+                        "tertiary-fixed": "#ffdbce",
+                        "on-background": "#0d1c2e",
+                        "secondary-fixed": "#89f5e7",
+                        "on-surface": "#0d1c2e",
+                        "inverse-surface": "#233144",
+                        "secondary-container": "#86f2e4",
+                        "surface-container-highest": "#d5e3fc",
+                        "on-surface-variant": "#444653",
+                        "on-secondary-fixed": "#00201d",
+                        "on-tertiary-fixed": "#380d00",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#d5e3fc",
+                        "outline-variant": "#c4c5d5",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "secondary": "#006a61",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#ffa583",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+            color: #0d1c2e;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-slate-50/80 backdrop-blur-xl fixed top-0 z-50 flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-secondary-container">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="portrait of a young college student with a friendly expression and glasses in a brightly lit modern library setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwCv97ks09LqvXVEaW8m_t33mGf_g4gBO6EUNgwkm-LKifVmFbv_9pJBCVeiF1IUzoeu8mnNOcnOchAKClTGPJ_QGYHLKsTaTd-_UBz3-KWFdAsUTQbUVwz-yT8wU2etpg0tUBuUucV-8pLwGlT0LyxBH-Iw1XST3ps8phjLmxwDqh3mPfXIbd59pnEXq8fT4AgmelOudXX-hCuOf-7g2kbcqaBiwDOj_rptNd7I9HcridP-_Y_T3P9JbpIhiU9pt3yTME-Ie1kao"/>
+</div>
+<div>
+<h1 class="text-xl font-manrope font-extrabold tracking-tight text-blue-900 leading-none">Intellectual Atelier</h1>
+<p class="text-[10px] uppercase tracking-widest font-bold text-secondary mt-1">SAMS Student Portal</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-blue-50/50 transition-colors text-blue-900">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 pt-24 pb-12">
+<!-- Hero Section / Greeting -->
+<section class="mb-10">
+<h2 class="text-3xl font-manrope font-bold text-on-surface mb-2">Welcome back, Alex.</h2>
+<p class="text-on-surface-variant font-body">Your academic journey continues. You have 3 tasks for today.</p>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- My Schedule Card (Asymmetric Span) -->
+<div class="md:col-span-7 bg-surface-container-lowest rounded-full p-8 transition-all duration-300">
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-xl font-manrope font-bold text-primary">My Schedule</h3>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Next Up</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="w-20 h-20 bg-surface-container-low rounded-full flex flex-col items-center justify-center border border-outline-variant/10">
+<span class="text-2xl font-bold text-primary">10:30</span>
+<span class="text-[10px] font-bold text-on-surface-variant">AM</span>
+</div>
+<div>
+<h4 class="text-2xl font-manrope font-extrabold text-on-surface">Advanced Thermodynamics</h4>
+<p class="text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+                            Hall 4B • Dr. Julian Thorne
+                        </p>
+</div>
+</div>
+</div>
+<!-- AI Study Help (Prominent Action Card) -->
+<div class="md:col-span-5 bg-gradient-to-br from-primary to-primary-container text-white rounded-full p-8 relative overflow-hidden flex flex-col justify-between min-h-[240px]">
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h3 class="text-xl font-manrope font-bold">AI Study Help</h3>
+</div>
+<p class="text-on-primary-container/90 text-sm max-w-[200px]">Get instant explanations and practice questions for any subject.</p>
+</div>
+<button class="relative z-10 w-fit bg-white text-primary px-6 py-3 rounded-full font-bold text-sm hover:scale-105 transition-transform">
+                    Start Chatting
+                </button>
+<!-- Decorative element -->
+<div class="absolute -right-10 -bottom-10 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+</div>
+<!-- Latest Announcements (Horizontal Scroller) -->
+<div class="md:col-span-12">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-xl font-manrope font-bold text-on-surface">Latest Announcements</h3>
+<button class="text-primary font-bold text-sm hover:underline">View All</button>
+</div>
+<div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
+<div class="min-w-[320px] bg-secondary-container/30 border border-secondary-container/20 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-secondary" data-icon="campaign">campaign</span>
+<span class="text-[10px] font-bold uppercase text-secondary">Campus Event</span>
+</div>
+<h4 class="font-manrope font-bold text-on-surface mb-2">Annual Science Symposium 2024</h4>
+<p class="text-xs text-on-surface-variant line-clamp-2">Registration for the symposium is now open. Submit your thesis abstracts before Friday.</p>
+</div>
+<div class="min-w-[320px] bg-surface-container-lowest border border-outline-variant/10 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary" data-icon="warning">warning</span>
+<span class="text-[10px] font-bold uppercase text-primary-container">Urgent</span>
+</div>
+<h4 class="font-manrope font-bold text-on-surface mb-2">Library Maintenance Hours</h4>
+<p class="text-xs text-on-surface-variant line-clamp-2">The West Wing library will be closed this weekend for system upgrades.</p>
+</div>
+<div class="min-w-[320px] bg-surface-container-lowest border border-outline-variant/10 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-tertiary" data-icon="assignment">assignment</span>
+<span class="text-[10px] font-bold uppercase text-tertiary">Exam Prep</span>
+</div>
+<h4 class="font-manrope font-bold text-on-surface mb-2">Midterm Review Sessions</h4>
+<p class="text-xs text-on-surface-variant line-clamp-2">Sign up for peer-led review sessions starting next Tuesday in the Commons.</p>
+</div>
+</div>
+</div>
+<!-- Recent Materials List -->
+<div class="md:col-span-12 bg-surface-container-low rounded-xl p-8">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-manrope font-bold text-on-surface">Recent Materials</h3>
+<div class="flex gap-2">
+<button class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-primary border border-outline-variant/10 hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-full group hover:bg-blue-50/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">Lecture_Notes_Week_08.pdf</h4>
+<p class="text-xs text-on-surface-variant font-body">Applied Mathematics • 2.4 MB</p>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-primary/10 text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+</button>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-full group hover:bg-blue-50/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="video_library">video_library</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">Quantum_Mechanics_Recap.mp4</h4>
+<p class="text-xs text-on-surface-variant font-body">Physics Department • 158 MB</p>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-primary/10 text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="play_circle">play_circle</span>
+</button>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-full group hover:bg-blue-50/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="folder_zip">folder_zip</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">Lab_Assets_Final_Project.zip</h4>
+<p class="text-xs text-on-surface-variant font-body">Computer Science • 45 MB</p>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-primary/10 text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 backdrop-blur-2xl shadow-[0_-10px_40px_rgba(0,0,0,0.04)] rounded-t-[2.5rem]">
+<!-- Home Active -->
+<a class="flex flex-col items-center justify-center bg-teal-100 text-teal-900 rounded-3xl px-6 py-2 transition-transform hover:scale-110" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-inter text-[11px] font-medium tracking-tight mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="book">book</span>
+<span class="font-inter text-[11px] font-medium tracking-tight mt-1">Materials</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-inter text-[11px] font-medium tracking-tight mt-1">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-inter text-[11px] font-medium tracking-tight mt-1">Profile</span>
+</a>
+</nav>
+<style>
+        /* Custom scrollbar hiding */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

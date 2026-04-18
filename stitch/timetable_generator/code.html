@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Intellectual Atelier | Smart Timetable Generator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#611e00",
+                        "on-primary-fixed": "#001453",
+                        "surface-container-high": "#dce9ff",
+                        "primary": "#00288e",
+                        "background": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "primary-container": "#1e40af",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#dde1ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "inverse-primary": "#b8c4ff",
+                        "on-secondary-fixed-variant": "#005049",
+                        "on-primary-fixed-variant": "#173bab",
+                        "surface": "#f8f9ff",
+                        "surface-container": "#e6eeff",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "surface-bright": "#f8f9ff",
+                        "outline": "#757684",
+                        "on-secondary-container": "#006f66",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#3755c3",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#872d00",
+                        "on-primary-container": "#a8b8ff",
+                        "surface-dim": "#ccdbf3",
+                        "tertiary-fixed": "#ffdbce",
+                        "on-background": "#0d1c2e",
+                        "secondary-fixed": "#89f5e7",
+                        "on-surface": "#0d1c2e",
+                        "inverse-surface": "#233144",
+                        "secondary-container": "#86f2e4",
+                        "surface-container-highest": "#d5e3fc",
+                        "on-surface-variant": "#444653",
+                        "on-secondary-fixed": "#00201d",
+                        "on-tertiary-fixed": "#380d00",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#d5e3fc",
+                        "outline-variant": "#c4c5d5",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "secondary": "#006a61",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#ffa583",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9ff; color: #0d1c2e; }
+        .font-manrope { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface">
+<!-- TopAppBar -->
+<header class="bg-slate-50/80 backdrop-blur-xl fixed top-0 z-50 flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary-fixed flex items-center justify-center">
+<img alt="Teacher profile photo" class="w-full h-full object-cover" data-alt="close-up portrait of a professional academic woman with glasses in a bright sunlit office library" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD641VHwOnsych9sv174HmShRFDut6lPekEtvDRz3d-o_XtXQLPYN701FXSK5KzJQa5CiAbQlFvy2MiKUdyvAlvl-dUq99LsN9wYXt4ebBz32T8jUo3UMnKvg6l4sGbjzyP5P9qQI_kzfEMPeeNLPCSQn1FLMStfKbYbk9YSoCQTDV2rECtHDJEahwOaH6lyQBkDV1CX6Hht_JA6b5-2NkKa1itMo5lVrb4p0S_w9bwH0LDFjvwB3TdLyRDKhwkv_DTl0qMtXgq29w"/>
+</div>
+<h1 class="text-2xl font-manrope font-extrabold tracking-tight text-blue-900">Intellectual Atelier</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="text-slate-500 hover:bg-blue-50/50 transition-colors py-1" href="#">Dashboard</a>
+<a class="text-blue-900 font-bold border-b-2 border-blue-900 py-1" href="#">Timetable</a>
+<a class="text-slate-500 hover:bg-blue-50/50 transition-colors py-1" href="#">Announcements</a>
+<a class="text-slate-500 hover:bg-blue-50/50 transition-colors py-1" href="#">Materials</a>
+</nav>
+<button class="text-blue-900 hover:bg-blue-50/50 p-2 rounded-full transition-colors active:duration-150 scale-95 active:scale-90">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<div class="flex min-h-screen pt-20 pb-24 md:pb-0">
+<!-- NavigationDrawer (Sidebar) -->
+<aside class="hidden md:flex fixed left-0 top-0 h-full w-72 bg-slate-50 flex-col py-8 z-40 rounded-r-3xl shadow-2xl shadow-blue-900/5">
+<div class="px-8 mb-12">
+<h2 class="text-xl font-manrope font-bold text-blue-900">Intellectual Atelier</h2>
+<div class="mt-8 flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-primary-container flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+</div>
+<div>
+<p class="font-manrope font-semibold text-blue-800 tracking-wide">Academic Lead</p>
+<p class="text-xs text-slate-500">Faculty of Science</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2">
+<a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-xl transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-manrope font-semibold tracking-wide">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 bg-blue-100 text-blue-900 rounded-xl transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-manrope font-semibold tracking-wide">Timetable</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-xl transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span class="font-manrope font-semibold tracking-wide">Announcements</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-xl transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-manrope font-semibold tracking-wide">Materials</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-72 px-6 md:px-12 py-8 bg-surface">
+<header class="mb-10">
+<h2 class="text-4xl font-manrope font-bold text-on-surface tracking-tight mb-2">Smart Timetable Generator</h2>
+<p class="text-on-surface-variant font-body opacity-80">Leverage AI to optimize your weekly academic schedule with precision.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Form Section -->
+<div class="lg:col-span-4 space-y-6">
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-blue-900/5 shadow-2xl">
+<h3 class="text-xl font-manrope font-bold text-primary mb-6">Input Parameters</h3>
+<form class="space-y-5">
+<div class="space-y-1.5">
+<label class="text-sm font-label font-semibold text-on-surface-variant">Subject Name</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary focus:bg-white transition-all" placeholder="e.g. Advanced Quantum Mechanics" type="text"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-label font-semibold text-on-surface-variant">Lead Instructor</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary focus:bg-white transition-all" placeholder="e.g. Dr. Julian Voss" type="text"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-label font-semibold text-on-surface-variant">Preferred Time Slots</label>
+<div class="grid grid-cols-2 gap-2">
+<button class="bg-surface-container-low hover:bg-primary-fixed text-sm py-2 px-3 rounded-lg text-on-surface-variant transition-colors flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-xs" data-icon="light_mode">light_mode</span> Morning
+                                    </button>
+<button class="bg-surface-container-low hover:bg-primary-fixed text-sm py-2 px-3 rounded-lg text-on-surface-variant transition-colors flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-xs" data-icon="wb_sunny">wb_sunny</span> Afternoon
+                                    </button>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-label font-semibold text-on-surface-variant">Duration (Minutes)</label>
+<select class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary focus:bg-white transition-all">
+<option>45 Minutes</option>
+<option selected="">60 Minutes</option>
+<option>90 Minutes</option>
+<option>120 Minutes</option>
+</select>
+</div>
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-white font-manrope font-bold py-4 rounded-full shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all mt-4 flex items-center justify-center gap-3" type="submit">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+                                Auto-Generate Timetable
+                            </button>
+</form>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl relative overflow-hidden group">
+<div class="relative z-10">
+<h4 class="text-primary font-manrope font-bold mb-2">Optimization Insight</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">AI suggests Tuesday mornings for Quantum Mechanics to maximize student engagement based on historical performance data.</p>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-8xl text-primary opacity-5 group-hover:scale-110 transition-transform duration-500" data-icon="psychology">psychology</span>
+</div>
+</div>
+<!-- Preview Grid Section -->
+<div class="lg:col-span-8 space-y-6">
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-blue-900/5 shadow-2xl min-h-[600px]">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h3 class="text-xl font-manrope font-bold text-on-surface mb-1">Generated Schedule</h3>
+<p class="text-sm text-on-surface-variant opacity-60">Week of Oct 23 - Oct 29, 2023</p>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="print">print</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+</div>
+</div>
+<!-- Schedule Grid -->
+<div class="overflow-x-auto no-scrollbar">
+<div class="min-w-[800px]">
+<div class="grid grid-cols-6 border-b border-outline-variant/10 pb-4">
+<div class="col-span-1"></div>
+<div class="text-center font-manrope font-bold text-xs uppercase tracking-widest text-on-surface-variant">Mon</div>
+<div class="text-center font-manrope font-bold text-xs uppercase tracking-widest text-on-surface-variant">Tue</div>
+<div class="text-center font-manrope font-bold text-xs uppercase tracking-widest text-on-surface-variant">Wed</div>
+<div class="text-center font-manrope font-bold text-xs uppercase tracking-widest text-on-surface-variant">Thu</div>
+<div class="text-center font-manrope font-bold text-xs uppercase tracking-widest text-on-surface-variant">Fri</div>
+</div>
+<div class="space-y-6 mt-6">
+<!-- Row 08:00 -->
+<div class="grid grid-cols-6 items-start gap-4">
+<div class="text-xs font-label font-bold text-primary/40 pt-2">08:00 AM</div>
+<div class="bg-primary-fixed/30 p-4 rounded-xl border-l-4 border-primary">
+<p class="text-xs font-bold text-primary mb-1">Theoretical Physics</p>
+<p class="text-[10px] text-on-primary-fixed-variant">Room 402 • Dr. Voss</p>
+</div>
+<div class="h-24 bg-surface-container-low/50 rounded-xl"></div>
+<div class="bg-primary-fixed/30 p-4 rounded-xl border-l-4 border-primary">
+<p class="text-xs font-bold text-primary mb-1">Theoretical Physics</p>
+<p class="text-[10px] text-on-primary-fixed-variant">Room 402 • Dr. Voss</p>
+</div>
+<div class="h-24 bg-surface-container-low/50 rounded-xl"></div>
+<div class="h-24 bg-surface-container-low/50 rounded-xl"></div>
+</div>
+<!-- Row 10:00 -->
+<div class="grid grid-cols-6 items-start gap-4">
+<div class="text-xs font-label font-bold text-primary/40 pt-2">10:00 AM</div>
+<div class="h-24 bg-surface-container-low/50 rounded-xl"></div>
+<div class="bg-secondary-container/30 p-4 rounded-xl border-l-4 border-secondary">
+<p class="text-xs font-bold text-on-secondary-container mb-1">Quantum Lab</p>
+<p class="text-[10px] text-on-secondary-fixed-variant">Main Hall • Dr. Julian</p>
+</div>
+<div class="h-24 bg-surface-container-low/50 rounded-xl"></div>
+<div class="bg-secondary-container/30 p-4 rounded-xl border-l-4 border-secondary">
+<p class="text-xs font-bold text-on-secondary-container mb-1">Quantum Lab</p>
+<p class="text-[10px] text-on-secondary-fixed-variant">Main Hall • Dr. Julian</p>
+</div>
+<div class="bg-primary-fixed/30 p-4 rounded-xl border-l-4 border-primary">
+<p class="text-xs font-bold text-primary mb-1">Theoretical Physics</p>
+<p class="text-[10px] text-on-primary-fixed-variant">Room 402 • Dr. Voss</p>
+</div>
+</div>
+<!-- Row 01:00 -->
+<div class="grid grid-cols-6 items-start gap-4">
+<div class="text-xs font-label font-bold text-primary/40 pt-2">01:00 PM</div>
+<div class="bg-surface-container-high/40 p-4 rounded-xl border-l-4 border-slate-300">
+<p class="text-xs font-bold text-slate-500 mb-1">Faculty Meeting</p>
+<p class="text-[10px] text-slate-400">Conference Room B</p>
+</div>
+<div class="h-24 bg-surface-container-low/50 rounded-xl"></div>
+<div class="h-24 bg-surface-container-low/50 rounded-xl"></div>
+<div class="h-24 bg-surface-container-low/50 rounded-xl"></div>
+<div class="h-24 bg-surface-container-low/50 rounded-xl"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 backdrop-blur-2xl shadow-[0_-10px_40px_rgba(0,0,0,0.04)]">
+<button class="flex flex-col items-center justify-center text-slate-400 hover:scale-110 transition-transform tap-highlight-none">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-inter text-[11px] font-medium tracking-tight">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-teal-100 text-teal-900 rounded-3xl px-6 py-2 hover:scale-110 transition-transform tap-highlight-none">
+<span class="material-symbols-outlined" data-icon="book" style="font-variation-settings: 'FILL' 1;">book</span>
+<span class="font-inter text-[11px] font-medium tracking-tight">Materials</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 hover:scale-110 transition-transform tap-highlight-none">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-inter text-[11px] font-medium tracking-tight">Chat</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 hover:scale-110 transition-transform tap-highlight-none">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-inter text-[11px] font-medium tracking-tight">Profile</span>
+</button>
+</nav>
+</body></html>

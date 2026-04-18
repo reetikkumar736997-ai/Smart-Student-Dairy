@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Intellectual Atelier | AI Study Assistant</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#611e00",
+                        "on-primary-fixed": "#001453",
+                        "surface-container-high": "#dce9ff",
+                        "primary": "#00288e",
+                        "background": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "primary-container": "#1e40af",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#dde1ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "inverse-primary": "#b8c4ff",
+                        "on-secondary-fixed-variant": "#005049",
+                        "on-primary-fixed-variant": "#173bab",
+                        "surface": "#f8f9ff",
+                        "surface-container": "#e6eeff",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "surface-bright": "#f8f9ff",
+                        "outline": "#757684",
+                        "on-secondary-container": "#006f66",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#3755c3",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#872d00",
+                        "on-primary-container": "#a8b8ff",
+                        "surface-dim": "#ccdbf3",
+                        "tertiary-fixed": "#ffdbce",
+                        "on-background": "#0d1c2e",
+                        "secondary-fixed": "#89f5e7",
+                        "on-surface": "#0d1c2e",
+                        "inverse-surface": "#233144",
+                        "secondary-container": "#86f2e4",
+                        "surface-container-highest": "#d5e3fc",
+                        "on-surface-variant": "#444653",
+                        "on-secondary-fixed": "#00201d",
+                        "on-tertiary-fixed": "#380d00",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#d5e3fc",
+                        "outline-variant": "#c4c5d5",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "secondary": "#006a61",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#ffa583",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chat-container {
+            height: calc(100vh - 180px);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface">
+<!-- TopAppBar - Mapped from JSON -->
+<header class="bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl docked full-width top-0 z-50 flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="Close up portrait of a smiling college student in a library setting with warm, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBe45dlwzydVf8LYSVw6okOqZCLnFTMRRpTnvtZ1fiGLMzZbS-ZxMM1tpXxHTd25I2YTX1RLS2oJmGjW4-GpxIcG0x5HnL7mtlV9RKeIqYHQJjFkS73UUmFgO5X6KKIiIfYERAcIWlaovJEoz5ipi1LjsMgQlsYFwWAFHPReRCWPLBUrSA9GMm6Hm1PCAseqrWawlwDhRU9VGNJVZpDJGg9ONzULvb-4P6D10eKrYzGMxYqtxFyK5e5xmueUYBigPOTNlzVFUkdafM"/>
+</div>
+<h1 class="text-2xl font-manrope font-extrabold tracking-tight text-blue-900 dark:text-blue-100">Intellectual Atelier</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="text-slate-500 dark:text-slate-400 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-colors px-2 py-1" href="#">Home</a>
+<a class="text-slate-500 dark:text-slate-400 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-colors px-2 py-1" href="#">Materials</a>
+<a class="text-blue-900 dark:text-blue-400 font-bold border-b-2 border-blue-900 px-2 py-1" href="#">Chat</a>
+<a class="text-slate-500 dark:text-slate-400 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-colors px-2 py-1" href="#">Profile</a>
+</nav>
+<button class="text-blue-900 dark:text-blue-400 scale-95 active:duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-6 pt-8 pb-32">
+<div class="flex flex-col lg:flex-row gap-8">
+<!-- Side Navigation - Academic Context -->
+<aside class="hidden lg:flex flex-col w-72 h-[calc(100vh-140px)] sticky top-24 bg-slate-50 dark:bg-slate-950 rounded-r-3xl py-8 shadow-2xl shadow-blue-900/5">
+<div class="px-6 mb-8">
+<h2 class="text-xl font-manrope font-bold text-blue-900 mb-1">Academic Lead</h2>
+<p class="text-sm text-slate-500">Faculty of Science</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 py-3 px-6 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all duration-300 mx-2" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-manrope font-semibold tracking-wide">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all duration-300 mx-2" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-manrope font-semibold tracking-wide">Timetable</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 bg-blue-100 dark:bg-blue-900/40 text-blue-900 dark:text-blue-100 rounded-xl mx-2" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-manrope font-semibold tracking-wide">AI Study Chat</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-all duration-300 mx-2" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-manrope font-semibold tracking-wide">Materials</span>
+</a>
+</nav>
+</aside>
+<!-- Chat Canvas -->
+<section class="flex-1 flex flex-col h-[calc(100vh-140px)]">
+<!-- Teal Header Component for Chat -->
+<div class="bg-secondary-container rounded-t-full px-8 py-6 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-on-secondary rounded-full">
+<span class="material-symbols-outlined text-secondary text-3xl" data-icon="smart_toy" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div>
+<h2 class="font-headline text-xl font-bold text-on-secondary-container">AI Study Assistant</h2>
+<p class="text-sm font-body text-on-secondary-container/70">Always active for your academic success</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-white/20 rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="history">history</span>
+</button>
+<button class="p-2 hover:bg-white/20 rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="settings">settings</span>
+</button>
+</div>
+</div>
+<!-- Messages Area -->
+<div class="flex-1 bg-surface-container-lowest overflow-y-auto p-8 space-y-8 chat-container">
+<!-- AI Message -->
+<div class="flex flex-col items-start gap-2 max-w-[85%]">
+<div class="flex items-center gap-2 mb-1">
+<span class="text-xs font-bold font-headline text-secondary uppercase tracking-wider">Assistant</span>
+<span class="text-[10px] text-on-surface-variant">10:24 AM</span>
+</div>
+<div class="bg-secondary-container/30 text-on-surface rounded-r-3xl rounded-bl-3xl p-6 shadow-sm border border-secondary-container/20">
+<p class="font-body leading-relaxed">Welcome back to the Intellectual Atelier. I've analyzed your upcoming Quantum Physics exam on Friday. How can I assist you today? We could review the <b>Schrödinger Equation</b> or I can generate a <b>practice quiz</b> based on your lecture notes.</p>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex flex-col items-end gap-2 max-w-[85%] ml-auto">
+<div class="flex items-center gap-2 mb-1">
+<span class="text-[10px] text-on-surface-variant">10:25 AM</span>
+<span class="text-xs font-bold font-headline text-primary uppercase tracking-wider">You</span>
+</div>
+<div class="bg-primary text-on-primary rounded-l-3xl rounded-br-3xl p-6 shadow-xl shadow-primary/10">
+<p class="font-body leading-relaxed">Can you help me with my Math homework? Specifically, the derivation of Taylor series for trigonometric functions.</p>
+</div>
+</div>
+<!-- AI Message (Detailed) -->
+<div class="flex flex-col items-start gap-2 max-w-[90%]">
+<div class="flex items-center gap-2 mb-1">
+<span class="text-xs font-bold font-headline text-secondary uppercase tracking-wider">Assistant</span>
+<span class="text-[10px] text-on-surface-variant">10:26 AM</span>
+</div>
+<div class="bg-secondary-container/30 text-on-surface rounded-r-3xl rounded-bl-3xl p-6 shadow-sm border border-secondary-container/20">
+<p class="font-body leading-relaxed mb-4">Absolutely. Taylor series represent a function as an infinite sum of terms calculated from the values of its derivatives at a single point.</p>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-secondary-container/30 mb-4 font-mono text-sm">
+                                sin(x) = x - x³/3! + x⁵/5! - x⁷/7! + ...
+                            </div>
+<p class="font-body leading-relaxed">To derive this, we find the n-th derivatives of sin(x) at x=0. Would you like me to walk through the step-by-step differentiation?</p>
+</div>
+</div>
+</div>
+<!-- Input Area & Suggested Chips -->
+<div class="bg-surface-container-low p-6 rounded-b-full">
+<!-- Chips -->
+<div class="flex gap-3 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+<button class="whitespace-nowrap px-5 py-2.5 bg-surface-container-lowest text-secondary border border-secondary-container/50 rounded-full font-label text-sm font-semibold hover:bg-secondary-container hover:text-on-secondary-container transition-all">
+                            Summarize my last lecture
+                        </button>
+<button class="whitespace-nowrap px-5 py-2.5 bg-surface-container-lowest text-secondary border border-secondary-container/50 rounded-full font-label text-sm font-semibold hover:bg-secondary-container hover:text-on-secondary-container transition-all">
+                            Solve problem 4b
+                        </button>
+<button class="whitespace-nowrap px-5 py-2.5 bg-surface-container-lowest text-secondary border border-secondary-container/50 rounded-full font-label text-sm font-semibold hover:bg-secondary-container hover:text-on-secondary-container transition-all">
+                            Explain 'Quantum Entanglement'
+                        </button>
+</div>
+<!-- Main Input -->
+<div class="flex items-center gap-4 bg-surface-container-lowest rounded-full p-2 shadow-2xl shadow-blue-900/5">
+<button class="p-3 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="attachment">attachment</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 font-body text-on-surface placeholder:text-slate-400" placeholder="Ask your study assistant anything..." type="text"/>
+<button class="bg-primary text-on-primary rounded-full px-8 py-3 font-headline font-bold flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/20">
+                            Send
+                            <span class="material-symbols-outlined text-sm" data-icon="send" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar - Mapped from JSON - Mobile Only -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl shadow-[0_-10px_40px_rgba(0,0,0,0.04)] rounded-t-[2.5rem]">
+<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:scale-110 transition-transform tap-highlight-none">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-inter text-[11px] font-medium tracking-tight">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:scale-110 transition-transform tap-highlight-none">
+<span class="material-symbols-outlined" data-icon="book">book</span>
+<span class="font-inter text-[11px] font-medium tracking-tight">Materials</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-teal-100 dark:bg-teal-900/60 text-teal-900 dark:text-teal-100 rounded-3xl px-6 py-2 hover:scale-110 transition-transform tap-highlight-none">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-inter text-[11px] font-medium tracking-tight">Chat</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:scale-110 transition-transform tap-highlight-none">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-inter text-[11px] font-medium tracking-tight">Profile</span>
+</div>
+</nav>
+</body></html>

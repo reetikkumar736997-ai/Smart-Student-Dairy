@@ -1,0 +1,42 @@
+# Smart Academic Management System (SAMS) - Product Requirements Document
+
+## Project Objective
+Build a web-based academic management system where teachers manage timetables, materials, and announcements, while students centralize their learning resources and access an AI study assistant.
+
+## Target Audience
+- **Teachers (Admins):** Manage academic operations, schedules, and materials.
+- **Students (Users):** Consume content, view schedules, and use AI help.
+
+## Core Features & User Flows
+
+### 1. Authentication & Role-Based Access
+- **Login/Signup:** Secure entry point.
+- **Role Detection:** System identifies user role (Teacher vs. Student) upon login.
+- **Redirection:** 
+    - Teachers -> Teacher Dashboard
+    - Students -> Student Dashboard
+
+### 2. Teacher Panel (Admin)
+- **Smart Timetable Generator:** Input subjects, teachers, and slots; logic to avoid conflicts.
+- **Announcement Management:** CRUD operations for school-wide or class-specific news.
+- **Study Material Management:** Cloud-based PDF uploads and management.
+- **Teacher Dashboard Overview:** Quick view of today's schedule and recent activity.
+
+### 3. Student Panel (User)
+- **Timetable Viewer:** Easy access to weekly schedules.
+- **Announcement Feed:** Stay updated with school news.
+- **Material Downloader:** Access and download shared study resources.
+- **AI Study Chatbot:** Interactive assistant for learning support.
+
+## Technical Specifications
+- **Frontend:** React + Tailwind CSS (Modern, responsive UI).
+- **Backend:** FastAPI or Node.js.
+- **Database:** PostgreSQL/MySQL.
+- **Storage:** AWS S3/Cloudinary for files.
+- **AI:** OpenAI/Groq for the chatbot.
+
+## Design Principles
+- **Clarity:** Simple, intuitive navigation for both roles.
+- **Role-Based Consistency:** Shared visual language but distinct functional areas.
+- **Efficiency:** Streamlined workflows for timetable generation and material uploads.
+- **Accessibility:** Readable typography and clear status indicators.

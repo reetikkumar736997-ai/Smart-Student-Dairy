@@ -1,0 +1,8 @@
+{
+  "name": "sams-app",
+  "version": "1.0.0",
+  "description": "SAMS - Smart Academic Management System Frontend",
+  "scripts": {
+    "dev": "npx -y live-server --port=3000 --no-browser"
+  }
+}

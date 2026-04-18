@@ -1,0 +1,240 @@
+/* === Global Styles === */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9ff;
+  color: #0d1c2e;
+  min-height: 100dvh;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+h1, h2, h3, h4, .font-manrope, .font-headline {
+  font-family: 'Manrope', sans-serif;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.tap-highlight-none {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* === Page transition === */
+#app {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Loading spinner === */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #dde1ff;
+  border-top-color: #00288e;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* === Chat === */
+.chat-container {
+  height: calc(100vh - 225px);
+  min-height: 560px;
+}
+
+.theme-light {
+  background:
+    radial-gradient(circle at top, rgba(134, 242, 228, 0.16), transparent 26%),
+    linear-gradient(180deg, #f8f9ff 0%, #edf3ff 100%);
+}
+
+.theme-dark {
+  background:
+    radial-gradient(circle at top, rgba(45, 212, 191, 0.14), transparent 24%),
+    linear-gradient(180deg, #020617 0%, #0f172a 100%);
+  color: #e2e8f0;
+}
+
+.topbar-shell,
+.chat-shell,
+.chat-header-panel,
+.chat-messages-panel,
+.chat-input-panel,
+.chat-input-wrap,
+.chat-chip,
+.assistant-bubble,
+.user-bubble {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  transform: translateY(-1px);
+}
+
+.chat-shell {
+  background:
+    radial-gradient(circle at top, rgba(134, 242, 228, 0.18), transparent 42%),
+    linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(229,238,255,0.65) 100%);
+}
+
+.chat-messages-panel {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.assistant-bubble {
+  background: rgba(134, 242, 228, 0.24);
+  color: #0d1c2e;
+}
+
+.theme-dark .chat-shell {
+  background:
+    radial-gradient(circle at top, rgba(45, 212, 191, 0.14), transparent 34%),
+    linear-gradient(180deg, rgba(15,23,42,0.96) 0%, rgba(2,6,23,0.94) 100%);
+}
+
+.theme-dark .chat-header-panel {
+  background: linear-gradient(135deg, #115e59, #0f172a);
+  color: #f8fafc;
+}
+
+.theme-dark .chat-messages-panel {
+  background: rgba(2, 6, 23, 0.62) !important;
+}
+
+.theme-dark .chat-input-panel {
+  background: rgba(15, 23, 42, 0.92) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.theme-dark .chat-input-wrap {
+  background: #020617 !important;
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.38) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.theme-dark .chat-input-field,
+.theme-dark .chat-input-field::placeholder {
+  color: #94a3b8 !important;
+}
+
+.theme-dark .chat-chip {
+  background: #020617 !important;
+  color: #99f6e4 !important;
+  border-color: rgba(45, 212, 191, 0.2) !important;
+}
+
+.theme-dark .chat-chip:hover {
+  background: rgba(45, 212, 191, 0.1) !important;
+  color: #ffffff !important;
+}
+
+.theme-dark .assistant-bubble {
+  background: rgba(45, 212, 191, 0.11) !important;
+  border-color: rgba(45, 212, 191, 0.18) !important;
+  color: #e2e8f0 !important;
+}
+
+.theme-dark .typing-dots span {
+  background: #5eead4;
+}
+
+.theme-dark .material-symbols-outlined {
+  color: inherit;
+}
+
+/* === Toast notifications === */
+.toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  padding: 16px 24px;
+  border-radius: 16px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  z-index: 9999;
+  animation: slideIn 0.3s ease-out;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.toast.success { background: linear-gradient(135deg, #006a61, #005049); }
+.toast.error { background: linear-gradient(135deg, #ba1a1a, #93000a); }
+.toast.info { background: linear-gradient(135deg, #00288e, #1e40af); }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(100px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* === Typing animation for chat === */
+.typing-dots span {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #006a61;
+  margin: 0 2px;
+  animation: bounce 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+
+/* === Focus styles === */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+}
+
+/* === Scrollbar styling === */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #c4c5d5;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #757684;
+}
+
+@media (max-width: 768px) {
+  .chat-container {
+    height: calc(100vh - 270px);
+    min-height: 460px;
+  }
+}

@@ -36,6 +36,8 @@ async function sendNotificationEmail({ recipients = [], subject, heading, messag
     socketTimeout: 15000,
   });
 
+  await transporter.verify();
+
   const safeMeta = meta.filter(Boolean);
   const text = [
     heading,
@@ -48,21 +50,34 @@ async function sendNotificationEmail({ recipients = [], subject, heading, messag
     ? `<ul style="padding-left:18px;margin:16px 0;">${safeMeta.map((item) => `<li>${item}</li>`).join('')}</ul>`
     : '';
 
-  await transporter.sendMail({
-    from: config.from,
-    to: config.from,
-    bcc: recipients.join(','),
-    subject,
-    text,
-    html: `
-      <div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px;color:#0f172a;">
-        <h2 style="margin:0 0 12px;">${heading}</h2>
-        <p style="margin:0 0 12px;line-height:1.6;">${message}</p>
-        ${htmlMeta}
-        <p style="margin-top:20px;color:#475569;">Smart Student Dairy Notification Center</p>
-      </div>
-    `,
-  });
+  const fromLabel = `Smart Student Dairy <${config.from}>`;
+  const sendResults = await Promise.allSettled(
+    recipients.map((recipient) =>
+      transporter.sendMail({
+        from: fromLabel,
+        to: recipient,
+        subject,
+        text,
+        html: `
+          <div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px;color:#0f172a;">
+            <h2 style="margin:0 0 12px;">${heading}</h2>
+            <p style="margin:0 0 12px;line-height:1.6;">${message}</p>
+            ${htmlMeta}
+            <p style="margin-top:20px;color:#475569;">Smart Student Dairy Notification Center</p>
+          </div>
+        `,
+      })
+    )
+  );
+
+  const failedDeliveries = sendResults.filter((result) => result.status === 'rejected');
+  if (failedDeliveries.length === sendResults.length) {
+    throw failedDeliveries[0].reason;
+  }
+
+  if (failedDeliveries.length) {
+    console.error(`Notification email partially failed: ${failedDeliveries.length}/${sendResults.length}`);
+  }
 
   return { skipped: false };
 }

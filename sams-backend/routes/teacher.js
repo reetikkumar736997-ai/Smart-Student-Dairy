@@ -57,6 +57,12 @@ async function notifyStudentsByEmail({ classLevel, section, subject, heading, me
   }
 }
 
+function queueStudentEmailNotification(payload) {
+  notifyStudentsByEmail(payload).catch((err) => {
+    console.error('Queued student notification email failed:', err.message);
+  });
+}
+
 // ==================== TIMETABLE ====================
 router.get('/timetable', async (req, res) => {
   try { res.json(await Timetable.find().sort({ createdAt: -1 })); }
@@ -81,7 +87,7 @@ router.post('/timetable', async (req, res) => {
     });
     const savedEntry = await entry.save();
 
-    await notifyStudentsByEmail({
+    queueStudentEmailNotification({
       classLevel,
       section,
       subject: `Class Change Alert: ${subject || 'Schedule Update'}`,
@@ -110,7 +116,7 @@ router.put('/timetable/:id', async (req, res) => {
       { new: true }
     );
 
-    await notifyStudentsByEmail({
+    queueStudentEmailNotification({
       classLevel,
       section,
       subject: `Class Change Alert: ${subject || 'Schedule Update'}`,
@@ -150,7 +156,7 @@ router.post('/announcements', async (req, res) => {
     const ann = new Announcement({ title, body, urgency, classLevel, section, createdBy: req.user.id });
     const savedAnnouncement = await ann.save();
 
-    await notifyStudentsByEmail({
+    queueStudentEmailNotification({
       classLevel,
       section,
       subject: `New Announcement: ${title || 'Class Update'}`,
@@ -201,7 +207,7 @@ router.post('/materials', upload.single('pdf'), async (req, res) => {
     });
     const savedMaterial = await material.save();
 
-    await notifyStudentsByEmail({
+    queueStudentEmailNotification({
       classLevel,
       section,
       subject: `New Material Uploaded: ${title || req.file.originalname}`,

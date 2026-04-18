@@ -31,6 +31,9 @@ async function sendNotificationEmail({ recipients = [], subject, heading, messag
     port: config.port,
     secure: config.secure,
     auth: config.auth,
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
   });
 
   const safeMeta = meta.filter(Boolean);

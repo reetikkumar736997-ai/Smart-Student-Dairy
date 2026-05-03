@@ -169,6 +169,134 @@ h1, h2, h3, h4, .font-manrope, .font-headline {
   color: inherit;
 }
 
+.theme-dark .bg-slate-50,
+.theme-dark aside.bg-slate-50 {
+  background: #0f172a !important;
+  color: #e2e8f0 !important;
+  box-shadow: 18px 0 60px rgba(2, 6, 23, 0.42) !important;
+}
+
+.theme-dark .text-on-surface,
+.theme-dark .text-blue-900 {
+  color: #f8fafc !important;
+}
+
+.theme-dark .text-on-surface-variant,
+.theme-dark .text-slate-500,
+.theme-dark .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+.theme-dark .text-primary {
+  color: #93c5fd !important;
+}
+
+.theme-dark .text-secondary {
+  color: #5eead4 !important;
+}
+
+.theme-dark .text-tertiary {
+  color: #fdba74 !important;
+}
+
+.theme-dark .bg-surface,
+.theme-dark .bg-background {
+  background-color: #020617 !important;
+}
+
+.theme-dark .bg-surface-container-lowest {
+  background-color: #111827 !important;
+  color: #e2e8f0 !important;
+}
+
+.theme-dark .bg-surface-container-low {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+
+.theme-dark .bg-surface-container,
+.theme-dark .bg-surface-container-high,
+.theme-dark .bg-surface-container-highest {
+  background-color: #263449 !important;
+  color: #e2e8f0 !important;
+}
+
+.theme-dark .border-white\/70,
+.theme-dark .border-outline-variant\/10,
+.theme-dark .border-primary\/10,
+.theme-dark .border-secondary-container\/20 {
+  border-color: rgba(148, 163, 184, 0.18) !important;
+}
+
+.theme-dark .shadow-blue-900\/5,
+.theme-dark .shadow-sm,
+.theme-dark .shadow-2xl {
+  box-shadow: 0 18px 50px rgba(2, 6, 23, 0.34) !important;
+}
+
+.theme-dark .bg-blue-100 {
+  background-color: rgba(59, 130, 246, 0.2) !important;
+  color: #bfdbfe !important;
+}
+
+.theme-dark .hover\:bg-slate-200\/50:hover,
+.theme-dark .hover\:bg-blue-50\/50:hover,
+.theme-dark .hover\:bg-primary\/5:hover {
+  background-color: rgba(59, 130, 246, 0.12) !important;
+}
+
+.theme-dark .bg-primary\/10 {
+  background-color: rgba(96, 165, 250, 0.16) !important;
+}
+
+.theme-dark .bg-primary-fixed\/70,
+.theme-dark .bg-primary-fixed,
+.theme-dark .bg-secondary-fixed,
+.theme-dark .bg-secondary-container {
+  background-color: rgba(45, 212, 191, 0.16) !important;
+  color: #99f6e4 !important;
+}
+
+.theme-dark input,
+.theme-dark select,
+.theme-dark textarea {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: rgba(148, 163, 184, 0.18) !important;
+}
+
+.theme-dark input::placeholder,
+.theme-dark textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+.theme-dark .bg-green-50 {
+  background-color: rgba(34, 197, 94, 0.14) !important;
+}
+
+.theme-dark .text-green-700,
+.theme-dark .text-green-600 {
+  color: #86efac !important;
+}
+
+.theme-dark .bg-red-50 {
+  background-color: rgba(248, 113, 113, 0.14) !important;
+}
+
+.theme-dark .text-red-700,
+.theme-dark .text-red-500 {
+  color: #fca5a5 !important;
+}
+
+.theme-dark .bg-amber-50 {
+  background-color: rgba(251, 191, 36, 0.14) !important;
+}
+
+.theme-dark .text-amber-700,
+.theme-dark .text-amber-600 {
+  color: #fcd34d !important;
+}
+
 /* === Toast notifications === */
 .toast {
   position: fixed;

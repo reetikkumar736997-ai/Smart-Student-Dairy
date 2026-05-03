@@ -2009,6 +2009,23 @@ function summarizeAttendance(attendance) {
   };
 }
 
+function groupAttendanceBySubject(attendance) {
+  const grouped = attendance.reduce((acc, entry) => {
+    const subject = entry.subject || 'General';
+    if (!acc[subject]) acc[subject] = [];
+    acc[subject].push(entry);
+    return acc;
+  }, {});
+
+  return Object.entries(grouped)
+    .map(([subject, records]) => ({
+      subject,
+      records: records.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0)),
+      summary: summarizeAttendance(records),
+    }))
+    .sort((a, b) => a.subject.localeCompare(b.subject));
+}
+
 function renderMarksPage() {
   const isTeacher = state.user?.role === 'teacher';
   const marks = state.marks || [];
@@ -2475,8 +2492,7 @@ function renderAttendancePage() {
       </div>
       <div class="xl:col-span-8 bg-surface-container-lowest rounded-3xl p-8 shadow-sm">
         <div class="flex justify-between items-center mb-6">
-          <h3 class="text-2xl font-manrope font-bold text-on-surface">Attendance History</h3>
-          <input id="studentAttendanceDateFilter" type="date" class="bg-surface-container-low border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary transition-all" value="${getTodayLocalDate()}" />
+          <h3 class="text-2xl font-manrope font-bold text-on-surface">Subject Attendance</h3>
         </div>
         <div id="studentAttendanceList" class="space-y-3">
           <div class="flex items-center justify-center py-8"><div class="spinner"></div></div>
@@ -2525,13 +2541,7 @@ function bindAttendancePage() {
     return;
   }
 
-  const studentDateFilter = document.getElementById('studentAttendanceDateFilter');
-  if (studentDateFilter) {
-    if (!studentDateFilter.value) {
-      studentDateFilter.value = getTodayLocalDate();
-    }
-    studentDateFilter.addEventListener('change', renderStudentAttendanceHistory);
-  }
+  renderStudentAttendanceHistory();
 }
 
 async function searchAttendanceStudents() {
@@ -2754,43 +2764,61 @@ function renderTeacherAttendanceHistory() {
 
 function renderStudentAttendanceHistory() {
   const list = document.getElementById('studentAttendanceList');
-  const dateFilter = document.getElementById('studentAttendanceDateFilter')?.value || '';
   if (!list) return;
 
-  const attendance = (state.attendance || []).filter((entry) => (
-    !dateFilter || formatDateInput(entry.date) === dateFilter
-  ));
+  const attendance = state.attendance || [];
+  const subjectGroups = groupAttendanceBySubject(attendance);
 
-  if (!attendance.length) {
-    list.innerHTML = '<p class="text-on-surface-variant text-center py-10">No attendance records found for this date.</p>';
+  if (!subjectGroups.length) {
+    list.innerHTML = '<p class="text-on-surface-variant text-center py-10">No attendance records found yet.</p>';
     return;
   }
 
-  list.innerHTML = attendance.map((entry) => `
-    <div class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/10">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
-        <div>
-          <p class="text-[11px] font-bold tracking-[0.2em] uppercase text-on-surface-variant mb-2">Date</p>
-          <p class="font-manrope font-bold text-on-surface">${formatDate(entry.date)}</p>
-        </div>
-        <div>
-          <p class="text-[11px] font-bold tracking-[0.2em] uppercase text-on-surface-variant mb-2">Subject</p>
-          <p class="font-semibold text-primary">${entry.subject || 'General'}</p>
-        </div>
-        <div>
-          <p class="text-[11px] font-bold tracking-[0.2em] uppercase text-on-surface-variant mb-2">Class And Section</p>
-          <p class="font-semibold text-on-surface">Class ${entry.classLevel || '--'} • Section ${entry.section || '--'}</p>
-        </div>
-        <div>
-          <p class="text-[11px] font-bold tracking-[0.2em] uppercase text-on-surface-variant mb-2">Status</p>
-          <div class="flex items-start gap-3">
-            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-[0.2em] ${attendanceStatusClass(entry.status)}">${entry.status}</span>
-            <span class="material-symbols-outlined ${entry.status === 'present' ? 'text-green-600' : 'text-red-500'}">${entry.status === 'present' ? 'check_circle' : 'cancel'}</span>
+  list.innerHTML = subjectGroups.map(({ subject, records, summary }, index) => `
+    <details class="group rounded-2xl bg-surface-container-low border border-outline-variant/10 overflow-hidden" ${index === 0 ? 'open' : ''}>
+      <summary class="cursor-pointer list-none p-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div class="flex items-center gap-4 min-w-0">
+          <span class="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined">menu_book</span>
+          </span>
+          <div class="min-w-0">
+            <h4 class="font-manrope font-bold text-on-surface text-lg truncate">${escapeHtml(subject)}</h4>
+            <p class="text-sm text-on-surface-variant mt-1">${summary.total} attendance record${summary.total === 1 ? '' : 's'}</p>
           </div>
         </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-[0.16em]">${summary.rate}%</span>
+          <span class="text-sm font-semibold text-secondary">P: ${summary.present}</span>
+          <span class="text-sm font-semibold text-tertiary">A: ${summary.absent}</span>
+          ${summary.late ? `<span class="text-sm font-semibold text-amber-700">L: ${summary.late}</span>` : ''}
+          <span class="material-symbols-outlined text-on-surface-variant transition-transform group-open:rotate-180">expand_more</span>
+        </div>
+      </summary>
+      <div class="px-5 pb-5 space-y-3">
+        ${records.map((entry) => `
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+              <div>
+                <p class="text-[11px] font-bold tracking-[0.16em] uppercase text-on-surface-variant">Date</p>
+                <p class="font-manrope font-bold text-on-surface mt-1">${formatDate(entry.date)}</p>
+              </div>
+              <div>
+                <p class="text-[11px] font-bold tracking-[0.16em] uppercase text-on-surface-variant">Class And Section</p>
+                <p class="font-semibold text-on-surface mt-1">Class ${escapeHtml(entry.classLevel || '--')} - Section ${escapeHtml(entry.section || '--')}</p>
+              </div>
+              <div class="sm:col-span-2">
+                <p class="text-[11px] font-bold tracking-[0.16em] uppercase text-on-surface-variant">Remark</p>
+                <p class="text-sm text-on-surface-variant mt-1">${escapeHtml(entry.remarks || 'Attendance recorded for this day.')}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 md:justify-end">
+              <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-[0.16em] ${attendanceStatusClass(entry.status)}">${escapeHtml(entry.status || 'recorded')}</span>
+              <span class="material-symbols-outlined ${entry.status === 'present' ? 'text-green-600' : entry.status === 'absent' ? 'text-red-500' : 'text-amber-600'}">${entry.status === 'present' ? 'check_circle' : entry.status === 'absent' ? 'cancel' : 'schedule'}</span>
+            </div>
+          </div>
+        `).join('')}
       </div>
-      <p class="text-sm text-on-surface-variant mt-4">${entry.remarks || 'Attendance recorded for this day.'}</p>
-    </div>
+    </details>
   `).join('');
 }
 

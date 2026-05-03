@@ -807,7 +807,6 @@ function renderProfilePage() {
           <p>Roll No: ${state.user?.rollNumber || '--'}</p>
           ` : `
           <p>Access Level: Teacher</p>
-          <p>Subjects/Class mapping can be added next.</p>
           `}
         </div>
       </div>

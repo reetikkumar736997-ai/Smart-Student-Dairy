@@ -33,6 +33,7 @@ const state = {
   attendance: [],
   attendanceRoster: [],
   studentMarksFilter: 'all',
+  selectedAttendanceSubject: '',
   subjectsByClass: {},
   theme: localStorage.getItem(THEME_KEY) || 'light',
   editingTimetableId: null,
@@ -159,7 +160,9 @@ function render() {
   app.offsetHeight; // force reflow
   app.style.animation = 'fadeIn 0.3s ease-out';
 
-  switch (state.currentPage) {
+  const routePage = state.currentPage.startsWith('attendance-subject/') ? 'attendance-subject' : state.currentPage;
+
+  switch (routePage) {
     case 'login':
       app.innerHTML = renderLogin();
       bindLogin();
@@ -196,6 +199,11 @@ function render() {
     case 'attendance':
       app.innerHTML = renderAttendancePage();
       bindAttendancePage();
+      loadAttendanceData();
+      break;
+    case 'attendance-subject':
+      app.innerHTML = renderStudentAttendanceSubjectPage();
+      bindStudentAttendanceSubjectPage();
       loadAttendanceData();
       break;
     case 'profile':
@@ -2026,6 +2034,19 @@ function groupAttendanceBySubject(attendance) {
     .sort((a, b) => a.subject.localeCompare(b.subject));
 }
 
+function navigateStudentAttendanceSubject(encodedSubject) {
+  const subject = decodeURIComponent(encodedSubject || 'General');
+  state.selectedAttendanceSubject = subject;
+  navigate(`attendance-subject/${encodeURIComponent(subject)}`);
+}
+
+function getSelectedAttendanceSubject() {
+  const routeSubject = state.currentPage.startsWith('attendance-subject/')
+    ? state.currentPage.slice('attendance-subject/'.length)
+    : '';
+  return routeSubject ? decodeURIComponent(routeSubject) : (state.selectedAttendanceSubject || 'General');
+}
+
 function renderMarksPage() {
   const isTeacher = state.user?.role === 'teacher';
   const marks = state.marks || [];
@@ -2699,7 +2720,11 @@ async function loadAttendanceData() {
       return;
     }
 
-    renderStudentAttendanceHistory();
+    if (state.currentPage.startsWith('attendance-subject/')) {
+      renderStudentAttendanceSubjectDetail();
+    } else {
+      renderStudentAttendanceHistory();
+    }
   } catch (err) {
     console.error('Failed to load attendance:', err);
   }
@@ -2774,9 +2799,9 @@ function renderStudentAttendanceHistory() {
     return;
   }
 
-  list.innerHTML = subjectGroups.map(({ subject, records, summary }, index) => `
-    <details class="group rounded-2xl bg-surface-container-low border border-outline-variant/10 overflow-hidden" ${index === 0 ? 'open' : ''}>
-      <summary class="cursor-pointer list-none p-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+  list.innerHTML = subjectGroups.map(({ subject, summary }) => `
+    <button type="button" onclick="navigateStudentAttendanceSubject('${encodeURIComponent(subject)}')" class="w-full text-left rounded-2xl bg-surface-container-low border border-outline-variant/10 p-5 hover:bg-primary/5 hover:border-primary/20 transition-colors">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div class="flex items-center gap-4 min-w-0">
           <span class="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
             <span class="material-symbols-outlined">menu_book</span>
@@ -2791,34 +2816,114 @@ function renderStudentAttendanceHistory() {
           <span class="text-sm font-semibold text-secondary">P: ${summary.present}</span>
           <span class="text-sm font-semibold text-tertiary">A: ${summary.absent}</span>
           ${summary.late ? `<span class="text-sm font-semibold text-amber-700">L: ${summary.late}</span>` : ''}
-          <span class="material-symbols-outlined text-on-surface-variant transition-transform group-open:rotate-180">expand_more</span>
+          <span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
         </div>
-      </summary>
-      <div class="px-5 pb-5 space-y-3">
-        ${records.map((entry) => `
-          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/10">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
-              <div>
-                <p class="text-[11px] font-bold tracking-[0.16em] uppercase text-on-surface-variant">Date</p>
-                <p class="font-manrope font-bold text-on-surface mt-1">${formatDate(entry.date)}</p>
-              </div>
-              <div>
-                <p class="text-[11px] font-bold tracking-[0.16em] uppercase text-on-surface-variant">Class And Section</p>
-                <p class="font-semibold text-on-surface mt-1">Class ${escapeHtml(entry.classLevel || '--')} - Section ${escapeHtml(entry.section || '--')}</p>
-              </div>
-              <div class="sm:col-span-2">
-                <p class="text-[11px] font-bold tracking-[0.16em] uppercase text-on-surface-variant">Remark</p>
-                <p class="text-sm text-on-surface-variant mt-1">${escapeHtml(entry.remarks || 'Attendance recorded for this day.')}</p>
-              </div>
-            </div>
-            <div class="flex items-center gap-3 md:justify-end">
-              <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-[0.16em] ${attendanceStatusClass(entry.status)}">${escapeHtml(entry.status || 'recorded')}</span>
-              <span class="material-symbols-outlined ${entry.status === 'present' ? 'text-green-600' : entry.status === 'absent' ? 'text-red-500' : 'text-amber-600'}">${entry.status === 'present' ? 'check_circle' : entry.status === 'absent' ? 'cancel' : 'schedule'}</span>
-            </div>
-          </div>
-        `).join('')}
       </div>
-    </details>
+    </button>
+  `).join('');
+}
+
+function renderStudentAttendanceSubjectPage() {
+  const subject = getSelectedAttendanceSubject();
+  const subjectRecords = (state.attendance || []).filter((entry) => (entry.subject || 'General') === subject);
+  const summary = summarizeAttendance(subjectRecords);
+
+  return `
+  ${topBar()}
+  ${studentSidebar('attendance')}
+  <main class="max-w-7xl mx-auto px-6 pt-24 pb-32 md:ml-72">
+    <section class="mb-8">
+      <button type="button" onclick="navigate('attendance')" class="mb-5 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-low text-on-surface-variant font-semibold hover:bg-surface-container-high transition-colors">
+        <span class="material-symbols-outlined text-base">arrow_back</span>
+        <span>Back</span>
+      </button>
+      <h2 class="text-3xl md:text-5xl font-manrope font-bold text-on-surface mb-2">${escapeHtml(subject)}</h2>
+      <p class="text-on-surface-variant text-lg">All attendance records for this subject.</p>
+    </section>
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+      <div class="xl:col-span-4 space-y-6">
+        <div class="bg-surface-container-lowest rounded-3xl p-8 shadow-sm">
+          <p class="text-xs font-bold tracking-[0.2em] uppercase text-on-surface-variant">Subject Rate</p>
+          <p id="studentSubjectRate" class="text-5xl font-manrope font-extrabold text-primary mt-3">${summary.rate}%</p>
+          <p id="studentSubjectTotal" class="mt-3 text-sm text-on-surface-variant">Total records: ${summary.total}</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-sm">
+            <p class="text-xs font-bold tracking-[0.2em] uppercase text-on-surface-variant">Present</p>
+            <p id="studentSubjectPresent" class="text-4xl font-manrope font-extrabold text-secondary mt-3">${summary.present}</p>
+          </div>
+          <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-sm">
+            <p class="text-xs font-bold tracking-[0.2em] uppercase text-on-surface-variant">Absent</p>
+            <p id="studentSubjectAbsent" class="text-4xl font-manrope font-extrabold text-tertiary mt-3">${summary.absent}</p>
+          </div>
+        </div>
+      </div>
+      <div class="xl:col-span-8 bg-surface-container-lowest rounded-3xl p-8 shadow-sm">
+        <div class="flex items-center justify-between gap-4 mb-6">
+          <h3 class="text-2xl font-manrope font-bold text-on-surface">Attendance Lines</h3>
+          <p id="studentSubjectEntryCount" class="text-sm text-on-surface-variant">${summary.total} entries</p>
+        </div>
+        <div id="studentSubjectAttendanceList" class="space-y-3">
+          <div class="flex items-center justify-center py-8"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  ${studentBottomNav('attendance')}
+  `;
+}
+
+function bindStudentAttendanceSubjectPage() {
+  state.selectedAttendanceSubject = getSelectedAttendanceSubject();
+  renderStudentAttendanceSubjectDetail();
+}
+
+function renderStudentAttendanceSubjectDetail() {
+  const list = document.getElementById('studentSubjectAttendanceList');
+  if (!list) return;
+
+  const subject = getSelectedAttendanceSubject();
+  const records = (state.attendance || [])
+    .filter((entry) => (entry.subject || 'General') === subject)
+    .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+  const summary = summarizeAttendance(records);
+  const rateEl = document.getElementById('studentSubjectRate');
+  const totalEl = document.getElementById('studentSubjectTotal');
+  const presentEl = document.getElementById('studentSubjectPresent');
+  const absentEl = document.getElementById('studentSubjectAbsent');
+  const countEl = document.getElementById('studentSubjectEntryCount');
+  if (rateEl) rateEl.textContent = `${summary.rate}%`;
+  if (totalEl) totalEl.textContent = `Total records: ${summary.total}`;
+  if (presentEl) presentEl.textContent = summary.present;
+  if (absentEl) absentEl.textContent = summary.absent;
+  if (countEl) countEl.textContent = `${summary.total} entries`;
+
+  if (!records.length) {
+    list.innerHTML = '<p class="text-on-surface-variant text-center py-10">No attendance records found for this subject.</p>';
+    return;
+  }
+
+  list.innerHTML = records.map((entry) => `
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 p-5 rounded-2xl bg-surface-container-low border border-outline-variant/10">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
+        <div>
+          <p class="text-[11px] font-bold tracking-[0.16em] uppercase text-on-surface-variant">Date</p>
+          <p class="font-manrope font-bold text-on-surface mt-1">${formatDate(entry.date)}</p>
+        </div>
+        <div>
+          <p class="text-[11px] font-bold tracking-[0.16em] uppercase text-on-surface-variant">Class And Section</p>
+          <p class="font-semibold text-on-surface mt-1">Class ${escapeHtml(entry.classLevel || '--')} - Section ${escapeHtml(entry.section || '--')}</p>
+        </div>
+        <div class="sm:col-span-2">
+          <p class="text-[11px] font-bold tracking-[0.16em] uppercase text-on-surface-variant">Remark</p>
+          <p class="text-sm text-on-surface-variant mt-1">${escapeHtml(entry.remarks || 'Attendance recorded for this day.')}</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 md:justify-end">
+        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-[0.16em] ${attendanceStatusClass(entry.status)}">${escapeHtml(entry.status || 'recorded')}</span>
+        <span class="material-symbols-outlined ${entry.status === 'present' ? 'text-green-600' : entry.status === 'absent' ? 'text-red-500' : 'text-amber-600'}">${entry.status === 'present' ? 'check_circle' : entry.status === 'absent' ? 'cancel' : 'schedule'}</span>
+      </div>
+    </div>
   `).join('');
 }
 

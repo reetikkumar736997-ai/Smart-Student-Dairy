@@ -2914,10 +2914,6 @@ function renderStudentAttendanceSubjectDetail() {
           <p class="text-[11px] font-bold tracking-[0.16em] uppercase text-on-surface-variant">Class And Section</p>
           <p class="font-semibold text-on-surface mt-1">Class ${escapeHtml(entry.classLevel || '--')} - Section ${escapeHtml(entry.section || '--')}</p>
         </div>
-        <div class="sm:col-span-2">
-          <p class="text-[11px] font-bold tracking-[0.16em] uppercase text-on-surface-variant">Remark</p>
-          <p class="text-sm text-on-surface-variant mt-1">${escapeHtml(entry.remarks || 'Attendance recorded for this day.')}</p>
-        </div>
       </div>
       <div class="flex items-center gap-3 md:justify-end">
         <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-[0.16em] ${attendanceStatusClass(entry.status)}">${escapeHtml(entry.status || 'recorded')}</span>

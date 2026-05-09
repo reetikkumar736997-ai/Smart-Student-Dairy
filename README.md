@@ -2,7 +2,6 @@ SmartSched AI – Intelligent Academic Planning Platform
 
 A smart academic management platform built to simplify communication and daily academic tasks between teachers and students. The platform helps manage timetables, attendance, announcements, study materials, marks, and academic updates in one place. Instead of using multiple systems, SmartSched AI provides a single, organized dashboard for both students and teachers.
 
-🔗 Live App: Add your deployed link here
 
 ✨ Features
 
@@ -59,9 +58,7 @@ Installation
 npm install
 npm run dev
 
-The application will run on:
 
-http://localhost:5173
 📁 Project Structure
 src/
 ├── pages/                 # Dashboard and UI pages
